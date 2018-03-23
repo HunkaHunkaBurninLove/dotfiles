@@ -1,0 +1,77 @@
+##
+## a2ps config
+##
+
+##
+## style-sheets:  --list=style-sheets
+## no truncate:   --truncate-lines=no
+## wide document: -1r -f10  (landscape, small fontsize)
+##
+
+## 3.1.2 general
+Options: --quiet
+#Options: --silent
+
+## code: use borders (-j) and line numbers (-C)
+UserOption: tcsh    -Etcsh -C -j
+UserOption: csh     -Etcsh -C -j
+UserOption: sh      -Esh -C -j
+UserOption: bash    -Esh -C -j
+UserOption: perl    -Eperl -C -j
+UserOption: python  -Epython -C -j
+UserOption: ruby    -Eruby -C -j
+UserOption: awk     -Eawk -C -j
+UserOption: make    -Egmake -C -j
+UserOption: code    -Egnuc -C -j
+UserOption: cxx     -Ecxx -C -j
+UserOption: java    -Ejava -C -j
+UserOption: fortran -Efortran -C -j 
+UserOption: R       -Erd -C -j
+
+## not code
+UserOption: plain   -C -j
+UserOption: text    -C -j
+UserOption: mail    -Email
+UserOption: man  -m -f 7 --left-footer="" --footer="" --center-title="manpage"
+
+## 3.1.3 sheet
+Options: -M Letter
+#Options: -M A4
+Options: -2           ## 2x1 landscape
+#Options: -j          ## border
+#Options: -A virtual  ## new file on next page (no blanks)
+
+## 3.1.4 page
+#Options: -C           ## --line-numbers=5
+Options: --non-printable-format='blank'
+Options: -T 2         ## tab size
+
+## 3.1.5 headings
+Options: --underlay=Cantwell
+Options: --header=%D{%Y-%m-%d_%R}
+Options: --footer=%d/%n
+Options: --left-footer=
+Options: --right-footer=%s./%s#
+Options: --left-title=
+Options: --center-title=$n
+Options: --right-title=
+
+## 3.1.6 input (prologue options now decrecated?)
+#Options: -c           ## cut long lines
+#Options: --prologue=bw
+#Options: --prologoue=gray
+#Options: --prologoue=gray2
+
+## 3.1.7 pretty print
+Options: -g          ## gaudy (--highlight-level=heavy)
+Options: -E          ## automatic style selection
+
+## 3.1.8 output (don't put comments on these lines)
+DefaultPrinter: | /usr/bin/lp
+UnknownPrinter: | /usr/bin/lp -d #o
+#Printer: file > /tmp/imput
+Printer: gv | evince -
+
+## 3.1.9 postscript
+Options: -s 2        ## two pages per sheet, DuplexNoTumble
+

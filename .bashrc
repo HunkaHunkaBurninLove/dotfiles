@@ -1,0 +1,141 @@
+## .bashrc
+
+## load system startup
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
+## environment vars
+umask 027
+export TZ="HST"
+export MALLOC_CHECK_=0
+export LC_ALL=C
+export GZIP="--best"
+export BZIP2="--best"
+export PAGER="less -emqw"
+export LESS="eMqwP ?1b(line %1b).  ?f%f:stdin.  ?e(END)  :?pb%pb\% .."
+export LESSCHARSET="utf-8"
+export EDITOR="emacs"
+export GREP_OPTIONS="--color=auto"
+if [ -z $DISPLAY ]; then
+  export DISPLAY=:0.0
+fi
+
+
+## git
+
+
+## PATH init
+#export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
+
+## Anaconda aliases
+apath=/Users/Shared/anaconda
+alias pyoff="source deactivate &> /dev/null"
+alias py27="source deactivate &> /dev/null ; source ${apath}/bin/activate py27"
+alias py35="source deactivate &> /dev/null ; source ${apath}/bin/activate py35"
+alias py36="source deactivate &> /dev/null ; source ${apath}/bin/activate py36"
+alias cartopy="source deactivate &> /dev/null ; source ${apath}/bin/activate cartopy"
+alias root="source deactivate &> /dev/null ; source ${apath}/bin/activate root"
+alias qtconsole="${apath}/envs/py36/bin/jupyter-qtconsole"
+
+## aliases
+alias di="dirs -v"
+alias ex="exit"
+alias hi="history"
+alias jo="jobs -l"
+alias la="/bin/ls -Ga"
+alias ll="/bin/ls -Gasl"
+alias ls="/bin/ls -G"
+alias mo="less -L -X -emq"
+alias num="nl -ba"
+alias p="/sbin/ping -c1 -W1 -q"
+alias pop="popd; dirs -v"
+alias so="source"
+#alias timeit="/usr/bin/time -f 'real_time= %E'"
+alias timeit="/usr/bin/time"
+alias tart="tar tzvf"
+alias tarx="tar xzpvf"
+alias xxdiff="kdiff3"
+
+## missing
+alias debug="valgrind --leak-check=no"
+alias gvv="evince"
+alias k="konqueror -geometry 800x1000+100+10"
+alias xpdf="/usr/bin/xpdf -z page"
+
+
+## functions
+function bak
+{
+    cp -p $1 $1.`date +"%Y_%m_%d`
+}
+function org
+{
+    cp -p $1 $1.org
+    chmod 0444 $1.org
+}
+function sav
+{
+    cp -p $1 $1.sav
+    chmod 0444 $1.sav
+}
+function pd
+{
+    pushd $1
+    dirs -v
+}
+function purge
+{
+    if [ $# = 0 ]; then
+	rm -f .??*~ *~ core
+    else
+	for dir; do
+	    if [ -d ${dir} ]; then
+		rm -f ${dir}/.??*~ ${dir}/*~ ${dir}/core
+	    fi
+	done
+    fi
+}
+function showpath
+{
+    xvar="PATH"
+    if [ $# -gt 0]; then
+	xvar=`printenv | cut -f1 -d= | grep -i "$1"`
+    fi
+    xlist=`printenv "${xvar}" | sed s/":"/" "/g`
+    echo "=== listing ${xvar} ==="
+    for item in ${xlist}; do
+	echo "${item}"
+    done
+}
+function meminfo
+{
+    value=`cat /proc/meminfo | grep -i memtotal | awk -F: '{print $2}' | head -n1 | awk '{print $1}'`
+    value=`expr ${value} / 1024`
+    echo "$value MB"
+}
+function cpuinfo
+{
+    val=1
+    if [ -d /sys/devices/system/cpu ]; then
+	val=`ls -d /sys/devices/system/cpu/cpu[0-9]* | wc -w`
+    else
+	val=`cat /proc/cpuinfo | grep -i "^processor" | wc -l`
+    fi
+    echo ${val}
+}
+function inspect
+{
+    (head -n4 ; tail -n4) < "$1" | column -t
+}
+function ti
+{
+    /usr/bin/env TZ=HST     date "+%Y-%m-%d %t %R:%S %t %A %t julian %j %t HST"
+    /usr/bin/env TZ=EST5EDT date "+%Y-%m-%d %t %R:%S %t %A %t julian %j %t EST5EDT"
+    /usr/bin/env TZ=UTC     date "+%Y-%m-%d %t %R:%S %t %A %t julian %j %t ZULU"
+    /usr/bin/env TZ=GMT0BST date "+%Y-%m-%d %t %R:%S %t %A %t julian %j %t GMT0BST"
+}
+
+## prompt
+export PS1="`whoami`@`uname -n`%  "
+
