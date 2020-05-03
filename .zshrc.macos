@@ -34,10 +34,6 @@ if [ -z $DISPLAY ]; then
   export DISPLAY=:0.0
 fi
 
-## RedHat 
-export MINISHIFT_USERNAME=ken.cantwell
-export MINISHIFT_PASSWORD=narvik201
-
 ## git
 
 
